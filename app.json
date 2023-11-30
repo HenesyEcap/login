@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AbraganLogin",
-    "slug": "AbraganLogin",
+    "name": "Login_Abragan",
+    "slug": "Login_Abragan",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
