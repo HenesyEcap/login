@@ -1,3 +1,4 @@
+import React from "react";
 import {
   View,
   Text,
@@ -5,12 +6,23 @@ import {
   Image,
   useWindowDimensions,
 } from "react-native";
-import React, { useState } from "react";
+import { Provider as PaperProvider, Button as PaperButton, DefaultTheme } from "react-native-paper";
 import Input from "../../components/Inputs/Input";
-import Button from "../../components/Buttons/Button";
 import Logo from "../../../assets/images/logo.png";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
+
+// Define the coffee-themed colors
+const coffeeTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#4A2F18", // Dark brown for primary elements
+    accent: "#D4A55D", // Light brown for accents
+    background: "#F8F1E6", // Beige background color
+    text: "#000000", // Black text color
+  },
+};
 
 const LogIn = () => {
   const {
@@ -36,50 +48,61 @@ const LogIn = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image
-        style={[styles.logo, { height: height * 0.3 }]}
-        source={Logo}
-        resizeMode="contain"
-      />
-      <Text style={styles.title}>Log in your account</Text>
+    <PaperProvider theme={coffeeTheme}>
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.logo}
+            source={Logo}
+            resizeMode="contain"
+          />
+        </View>
+        <Text style={styles.title}>Log In</Text>
 
-      <Input
-        name="username"
-        placeholder="Username"
-        control={control}
-        rules={{ required: "Username is required" }}
-      />
-      <Input
-        name="password"
-        placeholder="Password"
-        control={control}
-        secureTextEntry
-        rules={{
-          required: "Password is required",
-          minLength: {
-            value: 8,
-            message: "Password should be at least 8 characters long",
-          },
-        }}
-      />
+        <Input
+          name="username"
+          placeholder="Username"
+          control={control}
+          rules={{ required: "Username is required" }}
+        />
+        <Input
+          name="password"
+          placeholder="Password"
+          control={control}
+          secureTextEntry
+          rules={{
+            required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Password should be at least 8 characters long",
+            },
+          }}
+        />
 
-      <Button
-        text="Log In"
-        type="PRIMARY"
-        onPress={handleSubmit(onLoginPress)}
-      />
-      <Button
-        text="Forgot Password?"
-        type="TERTIARY"
-        onPress={onForgotPasswordPressed}
-      />
-      <Button
-        text="Don't have an account? Resgister here."
-        onPress={onDontHaveAccountPressed}
-        type="TERTIARY"
-      />
-    </View>
+        <PaperButton
+          mode="contained"
+          style={styles.primaryButton}
+          onPress={handleSubmit(onLoginPress)}
+        >
+          Log In
+        </PaperButton>
+
+        <PaperButton
+          mode="outlined"
+          style={styles.tertiaryButton}
+          onPress={onForgotPasswordPressed}
+        >
+          Forgot Password?
+        </PaperButton>
+
+        <PaperButton
+          style={styles.registerButton}
+          onPress={onDontHaveAccountPressed}
+        >
+          <Text style={styles.registerText}>Don't have an account? <Text style={{ textDecorationLine: "underline" }}>Register</Text> here.</Text>
+        </PaperButton>
+      </View>
+    </PaperProvider>
   );
 };
 
@@ -90,19 +113,40 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#2A2F4F",
+    backgroundColor: "#F8F1E6", // Beige background color
     borderRadius: 5,
   },
   title: {
     fontSize: 25,
     fontWeight: "300",
-    color: "white",
+    color: "#4A2F18", // Dark brown text color
+    marginBottom: 20,
   },
-
+  logoContainer: {
+    alignItems: "center",
+    marginTop: 20,
+  },
   logo: {
-    width: "70%",
-    maxWidth: 300,
-    height: 100,
+    width: 150,
+    height: 70,
+  },
+  primaryButton: {
+    width: "100%",
+    marginTop: 10,
+    backgroundColor: "#4A2F18", // Dark brown for primary button
+  },
+  tertiaryButton: {
+    width: "100%",
+    marginTop: 10,
+    borderColor: "#4A2F18", // Dark brown border color
+    borderWidth: 1,
+  },
+  registerButton: {
+    marginTop: 10,
+  },
+  registerText: {
+    fontWeight: "bold",
+    color: "#4A2F18", // Dark brown text color
   },
 });
 

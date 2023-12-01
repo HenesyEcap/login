@@ -1,58 +1,102 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  useWindowDimensions,
-  Image,
-} from "react-native";
 import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, FlatList, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Button from "../../components/Buttons/Button";
-import Logo from "../../../assets/images/logo.png";
 
-const Home = () => {
+const CoffeeHomePage = () => {
   const navigation = useNavigation();
 
-  const { height } = useWindowDimensions();
+  const coffeeTypes = [
+    {
+      id: "1",
+      name: "Espresso",
+      image: require("../../../assets/images/espresso.jpg"),
+    },
+    {
+      id: "2",
+      name: "Latte",
+      image: require("../../../assets/images/latte.jpg"),
+    },
+    {
+      id: "3",
+      name: "Cappuccino",
+      image: require("../../../assets/images/cappuccino.jpg"),
+    },
+    {
+      id: "4",
+      name: "Americano",
+      image: require("../../../assets/images/americano.jpg"),
+    },
+    // Add more coffee types as needed
+  ];
 
-  const onPressSignOut = () => {
-    navigation.navigate("Login");
+  const navigateToCoffeeDetails = (coffeeType) => {
+    // Navigate to the details screen for the selected coffee type
+    navigation.navigate("CoffeeDetails", { coffeeType });
   };
 
+  const renderCoffeeType = ({ item }) => (
+    <TouchableOpacity style={styles.coffeeTypeContainer} onPress={() => navigateToCoffeeDetails(item)}>
+      <Image source={item.image} style={styles.coffeeTypeImage} />
+      <Text style={styles.coffeeTypeName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
-      <Image
-        style={[styles.logo, { height: height * 0.3 }]}
-        source={Logo}
-        resizeMode="contain"
-      />
-      <Button text="Sign Out" type="TERTIARY" onPress={onPressSignOut} />
-    </View>
+    <ImageBackground
+      source={require("../../../assets/images/coffeebackground.jpg")} // Replace with your image source
+      style={styles.backgroundImage}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Welcome to Coffee World</Text>
+        <FlatList
+          data={coffeeTypes}
+          renderItem={renderCoffeeType}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          contentContainerStyle={styles.flatListContainer}
+        />
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+  },
   container: {
     flex: 1,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "space-between",
     padding: 20,
-    backgroundColor: "#2A2F4F",
   },
-
   title: {
     fontSize: 30,
-    fontWeight: "300",
-    color: "white",
+    fontWeight: "bold",
+    color: "#ffffff",
+    textAlign: "center",
+    marginVertical: 20,
   },
-
-  logo: {
-    width: "70%",
-    maxWidth: 300,
-    height: 100,
+  flatListContainer: {
+    justifyContent: "space-between",
+  },
+  coffeeTypeContainer: {
+    width: "48%",
+    marginBottom: 20,
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  coffeeTypeImage: {
+    width: "100%",
+    height: 150,
+    marginBottom: 8,
+    resizeMode: "cover",
+  },
+  coffeeTypeName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#ffffff",
+    textAlign: "center",
   },
 });
 
-export default Home;
+export default CoffeeHomePage;

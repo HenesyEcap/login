@@ -1,13 +1,18 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  useWindowDimensions,
-} from "react-native";
 import React from "react";
-import Button from "../../components/Buttons/Button";
+import { View, Text, StyleSheet } from "react-native";
+import { Provider as PaperProvider, Button as PaperButton, DefaultTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+
+const coffeeTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#4A2F18", // Dark brown for primary elements
+    accent: "#D4A55D", // Light brown for accents
+    background: "#F8F1E6", // Beige background color
+    text: "#000000", // Black text color
+  },
+};
 
 const Confirmation = () => {
   const navigation = useNavigation();
@@ -17,11 +22,19 @@ const Confirmation = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Your password has been reset sucessfully</Text>
-      <Text style={styles.text}>Now Login with your new password</Text>
-      <Button text="Log In" type="PRIMARY" onPress={onBackToLogin} />
-    </View>
+    <PaperProvider theme={coffeeTheme}>
+      <View style={styles.container}>
+        <Text style={styles.text}>Your password has been reset successfully</Text>
+        <Text style={styles.text}>Now Login with your new password</Text>
+        <PaperButton
+          mode="contained"
+          style={styles.primaryButton}
+          onPress={onBackToLogin}
+        >
+          Log In
+        </PaperButton>
+      </View>
+    </PaperProvider>
   );
 };
 
@@ -32,12 +45,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#DAE1E7",
+    backgroundColor: "#F8F1E6", // Beige background color
     borderRadius: 5,
   },
   text: {
     marginVertical: 10,
-    color: "#142850",
+    color: "#4A2F18", // Dark brown text color
+  },
+  primaryButton: {
+    marginTop: 20,
+    backgroundColor: "#4A2F18", // Dark brown for primary button
   },
 });
 
